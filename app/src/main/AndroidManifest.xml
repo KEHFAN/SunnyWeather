@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sunny.fanke.sunnyweather">
 
+
+    <!--打包指纹：43:66:6A:B4:D2:4E:67:29:1E:A9:30:B6:FE:75:EA:03:DC:9D:C6:3E-->
+    <!--调试指纹：8D:2C:99:A4:2D:71:70:35:9B:74:C4:7C:35:C0:16:9B:EE:66:A2:1B-->
+
     <!--用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
     <!--用于访问GPS定位-->
@@ -31,9 +35,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <!-- 设置key -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="78ae45ea5c2cc9f5a798bc1f3350fdd0"/>
+        <!-- 定位需要的服务 -->
         <service android:name="com.amap.api.location.APSService"></service>
         <activity android:name=".MainActivity">
             <intent-filter>
