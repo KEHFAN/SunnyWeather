@@ -2,7 +2,7 @@ package com.sunny.fanke.sunnyweather.gson;
 
 import java.util.List;
 
-public class WeatherBean {
+public class WeatherData_weatherBean {
 
     private List<HeWeather6Bean> HeWeather6;
 

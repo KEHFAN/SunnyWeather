@@ -2,14 +2,16 @@ package com.sunny.fanke.sunnyweather.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.gson.Gson;
 import com.sunny.fanke.sunnyweather.MyApplication.MyApplication;
 import com.sunny.fanke.sunnyweather.data.UseData_LocationLL;
-import com.sunny.fanke.sunnyweather.gson.WeatherBean;
+import com.sunny.fanke.sunnyweather.gson.WeatherData_weatherBean;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
@@ -43,25 +45,30 @@ public class GetWeather_weather_intentservice extends IntentService {
             Response response=client.newCall(request).execute();
             //发送天气广播
             LocalBroadcastManager localBroadcastManager=LocalBroadcastManager.getInstance(MyApplication.getContext());
-            Intent intent1=new Intent("com.sunny.broadcast.WeaData");
+
             //Log.d(TAG, "run: "+response.body().string());
             //此处解析天气信息
             String jsonData=String.valueOf(response.body().string());
             // 初始化GSON
             Gson gson=new Gson();
             // 使用Gson提供的fromJson将String格式的Json数据转为对象
-            WeatherBean weatherBean=gson.fromJson(jsonData,WeatherBean.class);
+            WeatherData_weatherBean weatherBean=gson.fromJson(jsonData,WeatherData_weatherBean.class);
             // 解析出第一层的数据
-            List<WeatherBean.HeWeather6Bean> heWeather6Beans=weatherBean.getHeWeather6();
-            //WeatherBean.HeWeather6Bean heWeather6Bean= (WeatherBean.HeWeather6Bean) weatherBean.getHeWeather6();
+            List<WeatherData_weatherBean.HeWeather6Bean> heWeather6Beans=weatherBean.getHeWeather6();
             //解析第二层"status"数据
-            String status=heWeather6Beans.get(0).getStatus();
-            //String status=heWeather6Beans.getStatus();
+            String status="状态："+heWeather6Beans.get(0).getStatus();
+            //解析第二层"basic"数据
+            WeatherData_weatherBean.HeWeather6Bean.BasicBean basicBean=heWeather6Beans.get(0).getBasic();
+            String basic="城市："+basicBean.getLocation();
+            //解析第二层"now"数据
+            WeatherData_weatherBean.HeWeather6Bean.NowBean nowBean=heWeather6Beans.get(0).getNow();
+            String now="天气："+nowBean.getCond_txt();
+            Intent intent1=new Intent("com.sunny.broadcast.WeaData");
 
+            intent1.putExtra("NowLocationWeather_status", status);
+            intent1.putExtra("NowLocationWeather_basic", basic);
+            intent1.putExtra("NowLocationWeather_now",now);
 
-            //UseData_Weather useData_weather=new UseData_Weather();
-            //useData_weather.setResponseBody(response.body());
-            intent1.putExtra("NowLocationWeather", status);
             localBroadcastManager.sendBroadcast(intent1);
         } catch (IOException e) {
             e.printStackTrace();

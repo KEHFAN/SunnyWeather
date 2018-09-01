@@ -17,8 +17,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import com.sunny.fanke.sunnyweather.MyApplication.MyApplication;
 import com.sunny.fanke.sunnyweather.data.UseData_LocationLL;
+import com.sunny.fanke.sunnyweather.gson.WeatherData_weatherBean;
 import com.sunny.fanke.sunnyweather.service.GetLocation_Service;
 import com.sunny.fanke.sunnyweather.service.GetWeather_weather_intentservice;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public TextView textView=null;
@@ -138,9 +141,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String data=intent.getStringExtra("NowLocationWeather");
-
-            weatherTextView.setText("天气数据：\n"+data);
+            String data=intent.getStringExtra("NowLocationWeather_status");
+            data+="\n"+intent.getStringExtra("NowLocationWeather_basic");
+            data+="\n"+intent.getStringExtra("NowLocationWeather_now");
+            weatherTextView.setText(data);
         }
     }
 
