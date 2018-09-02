@@ -19,7 +19,11 @@
             <include layout="@layout/title"/>
             <include layout="@layout/weather_view_now"/>
             <include layout="@layout/weather_view_hourly"/>
-            <include layout="@layout/weather_view_forecast"/>
+            <!--使用RecyclerView-->
+            <include layout="@layout/weather_view_forecast_recyclerview"/>
+            <!--使用ListView-->
+            <!--<include layout="@layout/weather_view_forecast"/>-->
+
 
         </LinearLayout>
     </ScrollView>

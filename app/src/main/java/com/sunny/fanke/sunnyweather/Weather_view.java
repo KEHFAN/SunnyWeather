@@ -14,17 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.sunny.fanke.sunnyweather.MyApplication.MyApplication;
 import com.sunny.fanke.sunnyweather.data.UseData_LocationLL;
 import com.sunny.fanke.sunnyweather.recyclerView.Forecast;
-import com.sunny.fanke.sunnyweather.recyclerView.ForecastAdapter;
+import com.sunny.fanke.sunnyweather.recyclerView.ForecastAdapter_RecyclerView;
 import com.sunny.fanke.sunnyweather.recyclerView.Hour;
-import com.sunny.fanke.sunnyweather.recyclerView.hourlyAdapter;
+import com.sunny.fanke.sunnyweather.recyclerView.HourlyAdapter_RecyclerView;
 import com.sunny.fanke.sunnyweather.service.GetLocation_Service;
 import com.sunny.fanke.sunnyweather.service.GetWeather_weather_intentservice;
 
@@ -37,7 +34,7 @@ public class Weather_view extends AppCompatActivity {
     private Weather_view.WeaMyBroadReceiver wReceiver;
     private LocalBroadcastManager wlocalBroadcastManager;
     //逐小时数据测试
-
+    private List<Hour> hourList=new ArrayList<>();
     private List<Forecast> forecastList=new ArrayList<>();
 
     @Override
@@ -72,9 +69,6 @@ public class Weather_view extends AppCompatActivity {
         Intent startSerivce=new Intent(Weather_view.this, GetLocation_Service.class);
         startService(startSerivce);
 
-        //逐小时数据测试
-
-
 
         //本地广播接收器location
         IntentFilter filter=new IntentFilter();
@@ -93,7 +87,12 @@ public class Weather_view extends AppCompatActivity {
     /**
      * 逐小时数据测试
      */
-
+    private void initHours(){
+        for (int i = 0; i < 15; i++) {
+            Hour hour=new Hour("20:00","20℃");
+            hourList.add(hour);
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -130,6 +129,16 @@ public class Weather_view extends AppCompatActivity {
             nowTem.setText(intent.getStringExtra("NowLocationWeather_now_tmp"));
             TextView nowTxt1=(TextView)findViewById(R.id.weather_view_now_txt1);
             nowTxt1.setText(intent.getStringExtra("NowLocationWeather_now_cond_txt"));
+            //逐小时数据测试
+            initHours();
+            RecyclerView recyclerView_hour=(RecyclerView)findViewById(R.id.weather_view_hourly);
+            LinearLayoutManager layoutManager_hour=new LinearLayoutManager(MyApplication.getContext());
+            //设置水平滚动
+            layoutManager_hour.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerView_hour.setLayoutManager(layoutManager_hour);
+            HourlyAdapter_RecyclerView adapter_recyclerView_hour=new HourlyAdapter_RecyclerView(hourList);
+            recyclerView_hour.setAdapter(adapter_recyclerView_hour);
+            //daily_forecast
             String [][] daily_forecast=new String[15][3];
             int dailyforecasti=Integer.valueOf(intent.getStringExtra("NowLocationWeather_forecasti"));
             for (int i = 0; i < dailyforecasti; i++) {
@@ -142,10 +151,16 @@ public class Weather_view extends AppCompatActivity {
                 Forecast forecast=new Forecast(daily_forecast[i][0],daily_forecast[i][1],daily_forecast[i][2]);
                 forecastList.add(forecast);
             }
-            ForecastAdapter forecastAdapter=new ForecastAdapter(Weather_view.this,
-                    R.layout.weather_view_forecast_item,forecastList);
-            ListView listView=(ListView) findViewById(R.id.weather_view_forecast);
-            listView.setAdapter(forecastAdapter);
+            //使用ListView
+            //ForecastAdapter forecastAdapter=new ForecastAdapter(Weather_view.this, R.layout.weather_view_forecast_item,forecastList);
+            //ListView listView=(ListView) findViewById(R.id.weather_view_forecast);
+            //listView.setAdapter(forecastAdapter);
+            //使用RecyclerView
+            RecyclerView recyclerView=(RecyclerView)findViewById(R.id.weather_view_forecast_recyclerview);
+            LinearLayoutManager layoutManager=new LinearLayoutManager(MyApplication.getContext());
+            recyclerView.setLayoutManager(layoutManager);
+            ForecastAdapter_RecyclerView adapter_recyclerView=new ForecastAdapter_RecyclerView(forecastList);
+            recyclerView.setAdapter(adapter_recyclerView);
         }
     }
 }
