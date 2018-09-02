@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/weather_view_now_degree1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="90sp"
+        android:text="23"
+        />
+    <TextView
+        android:id="@+id/weather_view_now_degree2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/weather_view_now_degree1"
+        android:layout_alignTop="@id/weather_view_now_degree1"
+        android:layout_marginTop="8dp"
+        android:textSize="50sp"
+        android:text="℃"
+        />
+
+
+</RelativeLayout>

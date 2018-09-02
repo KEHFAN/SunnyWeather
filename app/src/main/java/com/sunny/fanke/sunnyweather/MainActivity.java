@@ -67,17 +67,14 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                textView.setText("new");
+                Intent intent=new Intent(MainActivity.this,Weather_view.class);
+                startActivity(intent);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //sendRequestHttp();
-                textView.setText("结束"+address);
-                Http http=new Http(textView);
-                address=http.sendHttps("https://www.baidu.com");
-                Log.d("MainActivity", "onClick: "+address);
 
             }
         });

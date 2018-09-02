@@ -22,13 +22,13 @@
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="定位" />
+            android:text="启动新活动" />
 
         <Button
             android:id="@+id/button2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="http" />
+            android:text="暂无" />
 
         <Button
             android:id="@+id/button3"

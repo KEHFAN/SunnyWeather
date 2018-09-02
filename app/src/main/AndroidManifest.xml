@@ -47,11 +47,6 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service
@@ -78,6 +73,17 @@
 
         <service
             android:name=".service.GetWeather_weather_intentservice"
+            android:exported="false" />
+
+        <activity android:name=".Weather_view" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.GetLocation_intentservice"
             android:exported="false"></service>
     </application>
 

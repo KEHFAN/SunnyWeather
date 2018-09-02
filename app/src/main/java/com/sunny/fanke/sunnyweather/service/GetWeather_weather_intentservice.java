@@ -59,15 +59,37 @@ public class GetWeather_weather_intentservice extends IntentService {
             String status="状态："+heWeather6Beans.get(0).getStatus();
             //解析第二层"basic"数据
             WeatherData_weatherBean.HeWeather6Bean.BasicBean basicBean=heWeather6Beans.get(0).getBasic();
-            String basic="城市："+basicBean.getLocation();
+            String basic=basicBean.getLocation();
             //解析第二层"now"数据
             WeatherData_weatherBean.HeWeather6Bean.NowBean nowBean=heWeather6Beans.get(0).getNow();
-            String now="天气："+nowBean.getCond_txt();
+            String now=nowBean.getCond_txt();
+            String tmp=nowBean.getTmp();
+            String fl=nowBean.getFl();
+            //解析第二层"daily_forecast"数据
+            String [][] daily_forecast=new String[15][3];
+            List<WeatherData_weatherBean.HeWeather6Bean.DailyForecastBean> dailyForecastBean=heWeather6Beans.get(0).getDaily_forecast();
+            int dailyForecastBeani=dailyForecastBean.size();
+            for (int i = 0; i < dailyForecastBeani; i++) {
+                String date=dailyForecastBean.get(i).getDate();
+                daily_forecast[i][0]=date.substring(5,date.length());
+                daily_forecast[i][1]=dailyForecastBean.get(i).getCond_txt_d();
+                String tmpMaxMin=dailyForecastBean.get(i).getTmp_max()+"℃/"+
+                        dailyForecastBean.get(i).getTmp_min()+"℃";
+                daily_forecast[i][2]=tmpMaxMin;
+            }
             Intent intent1=new Intent("com.sunny.broadcast.WeaData");
 
             intent1.putExtra("NowLocationWeather_status", status);
-            intent1.putExtra("NowLocationWeather_basic", basic);
-            intent1.putExtra("NowLocationWeather_now",now);
+            intent1.putExtra("NowLocationWeather_basic_city", basic);
+            intent1.putExtra("NowLocationWeather_now_cond_txt",now);
+            intent1.putExtra("NowLocationWeather_now_tmp",tmp);//气温
+            intent1.putExtra("NowLocationWeather_now_fl",fl);//体感温度
+            //传递第二层"daily_forecast"数据
+            intent1.putExtra("NowLocationWeather_forecasti",String.valueOf(dailyForecastBeani));
+            for (int i = 0; i < dailyForecastBeani; i++) {
+                String name="NowLocationWeather_forecast"+i;
+                intent1.putExtra(name,daily_forecast[i]);
+            }
 
             localBroadcastManager.sendBroadcast(intent1);
         } catch (IOException e) {
