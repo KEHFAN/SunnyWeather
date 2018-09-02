@@ -130,7 +130,17 @@ public class Weather_view extends AppCompatActivity {
             TextView nowTxt1=(TextView)findViewById(R.id.weather_view_now_txt1);
             nowTxt1.setText(intent.getStringExtra("NowLocationWeather_now_cond_txt"));
             //逐小时数据测试
-            initHours();
+            String [][] hourly=new String[24][2];
+            int hourlyBeanListi=Integer.valueOf(intent.getStringExtra("NowLocationWeather_hourlyi"));
+            for (int i = 0; i < hourlyBeanListi; i++) {
+                String name="NowLocationWeather_hourly"+i;
+                hourly[i]=intent.getStringArrayExtra(name);
+            }
+            for (int i = 0; i < hourlyBeanListi; i++) {
+                Hour hour=new Hour(hourly[i][0],hourly[i][1]);
+                hourList.add(hour);
+            }
+            //initHours();
             RecyclerView recyclerView_hour=(RecyclerView)findViewById(R.id.weather_view_hourly);
             LinearLayoutManager layoutManager_hour=new LinearLayoutManager(MyApplication.getContext());
             //设置水平滚动

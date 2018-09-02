@@ -77,6 +77,15 @@ public class GetWeather_weather_intentservice extends IntentService {
                         dailyForecastBean.get(i).getTmp_min()+"℃";
                 daily_forecast[i][2]=tmpMaxMin;
             }
+            //解析第二层"hourly"数据
+            String [][] hourly=new String[24][2];
+            List<WeatherData_weatherBean.HeWeather6Bean.HourlyBean> hourlyBeanList=heWeather6Beans.get(0).getHourly();
+            int hourlyBeanListi=hourlyBeanList.size();
+            for (int i = 0; i < hourlyBeanListi; i++) {
+                String hour=hourlyBeanList.get(i).getTime();
+                hourly[i][0]=hour.substring(11,hour.length());
+                hourly[i][1]=hourlyBeanList.get(i).getTmp()+"℃";
+            }
             Intent intent1=new Intent("com.sunny.broadcast.WeaData");
 
             intent1.putExtra("NowLocationWeather_status", status);
@@ -89,6 +98,12 @@ public class GetWeather_weather_intentservice extends IntentService {
             for (int i = 0; i < dailyForecastBeani; i++) {
                 String name="NowLocationWeather_forecast"+i;
                 intent1.putExtra(name,daily_forecast[i]);
+            }
+            //传递第二层"hourly"数据
+            intent1.putExtra("NowLocationWeather_hourlyi",String.valueOf(hourlyBeanListi));
+            for (int i = 0; i < hourlyBeanListi; i++) {
+                String name="NowLocationWeather_hourly"+i;
+                intent1.putExtra(name,hourly[i]);
             }
 
             localBroadcastManager.sendBroadcast(intent1);
